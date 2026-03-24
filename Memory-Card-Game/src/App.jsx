@@ -44,19 +44,20 @@ function App() {
       const firstCard = newFlippedCards[0];
       const secondCard = newFlippedCards[1];
 
-      // Use a timeout so the 2nd card visually flips before the alert appears
       setTimeout(() => {
-        if (firstCard.value === secondCard.value) {
-          alert("Match!");
-          // Keep them flipped & lock them by setting isMatched: true
-        } else {
-          alert("No Match!");
-        }
-        // Clear the flipped array so we can pick 2 new cards
-        setFlippedCards([]);
-      }, 500);
+
+        // Not a match! Flip back those two specific cards
+        const flippedBackCards = newCards.map((c) => {
+          if (c.id === firstCard.id || c.id === card.id) {
+            return { ...c, isFlipped: false };
+          } else {
+            return c;
+          }
+        });
+        setCards(flippedBackCards);
+      }, 1000); // 1-second delay so the player can see the cards
     }
-  }
+  }; // <-- This closing bracket was missing!
 
   return (
     <>
@@ -64,13 +65,13 @@ function App() {
         <GameHeader score={3} moves={10} />
 
         <div className="cards-grid">
-          {cards.map((card, index) => (
+          {cards.map((card) => (
             <Card key={card.id} card={card} onCardClick={handleCardClick} />
           ))}
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
